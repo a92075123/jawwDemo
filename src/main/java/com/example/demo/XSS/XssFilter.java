@@ -15,25 +15,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-
-@Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
+@WebFilter(filterName = "xssFilter", urlPatterns = "/*")
 public class XssFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        XSSRequestWrapper wrappedRequest = new XSSRequestWrapper((HttpServletRequest) request);
-
-        String body = IOUtils.toString(wrappedRequest.getReader());
-
-        if (!StringUtils.isBlank(body)) {
-
-            body = XSSRequestWrapper.stripXSS(body);
-
-        }
-
-
-        filterChain.doFilter(wrappedRequest, response);
+        System.out.println("OK");
+        filterChain.doFilter(new XSSRequestWrapper((HttpServletRequest) request), response);
 
     }
 }
